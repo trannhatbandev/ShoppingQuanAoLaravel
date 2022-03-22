@@ -6,10 +6,15 @@
 			<div class="breadcrumbs">
 				<ol class="breadcrumb">
 				  <li><a href="{{URL::to('/')}}">Trang chủ</a></li>
-				  <li class="active">Giỏ hàng của bạn</li>
+				  <li class="active">Thanh toán giỏ hàng</li>
 				</ol>
+			</div><!--/breadcrums-->
+
+		
+			<div class="review-payment">
+				<h2>Xem lại giỏ hàng</h2>
 			</div>
-			<div class="table-responsive cart_info">
+            <div class="table-responsive cart_info">
 				<?php
 					$content = Cart::getcontent();
 					// echo "<pre>";
@@ -43,7 +48,7 @@
 								<div class="cart_quantity_button">
 									<form action="{{URL::to('/update-cart-quantity')}}" method="post">
 										{{ csrf_field() }}
-										<td><input name="cart_to_quantity" value="{{$value->quantity}}" min="1" type="number"></td>
+										<input class="cart_quantity_input" type="number" name="cart_to_quantity" value="{{$value->quantity}}" min="1">
 										<input class="form-control" type="hidden" name="product_id_to_cart" value="{{$value->id}}">
 										<input class="btn btn-default btn-sm" type="submit" value="Cập nhật số lượng">
 									</form>
@@ -67,58 +72,25 @@
 					</tbody>
 				</table>
 			</div>
+            <h4 style="margin:40px 0; font-size:20px;">Chọn hình thức thanh toán</h4>
+            <form action="{{URL::to('/order')}}" method="post">
+                {{ csrf_field() }}
+			<div class="payment-options">
+					<span>
+						<label><input name="check_option" type="checkbox" value="bằng ATM"> Trả bằng thẻ ATM</label>
+					</span>
+					<span>
+						<label><input name="check_option" type="checkbox" value="bằng tiền mặt"> Nhận tiền mặt</label>
+					</span>
+					<span>
+						<label><input name="check_option" type="checkbox" value="bằng paypal"> Thanh toán Paypal</label>
+					</span>
+                    <input class="btn btn-primary btn-sm" name="order" type="submit" value="Đặt hàng">
+			</div>
+            </form>
 		</div>
 	</section> <!--/#cart_items-->
-	<section id="do_action">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-6">
-					<div class="total_area">
-						<ul>
-							
-							<li>Tổng <span>{{Cart::getSubTotal()}}</span></li>
-							<?php
-							$cartConditions = Cart::getConditions();
-							?>
-							@foreach($cartConditions as $condition)
-							<li>Thuế 
-								<span>
-									{{$condition->getValue()}}
-								</span>
-							</li>
-							<li>Phí vận chuyển <span>Free</span></li>
-							<li>Thành tiền 
-								<span>
-									<?php
-										$value = $condition->getValue();
-										$tax = explode('%',$value);
-										$total = Cart::getTotal()+($tax[0]*100);
-										echo $total;
-									?>	
-								</span>
-							</li>
-							@endforeach
-						</ul>
-					
-							<!-- <a class="btn btn-default update" href="">Cập nhật</a> -->
-							<?php
-									$customer_id = Session::get('customer_id');
-									if($customer_id!=null){
 
-									
-								?>
-									<a class="btn btn-default check_out" href="{{URL::to('/checkout')}}">Thanh toán</a>
-								<?php
-									}else{
-									?>
-									<a class="btn btn-default check_out" href="{{URL::to('/login-checkout')}}">Thanh toán</a>
-								<?php
-									}
-								?>
-						
-					</div>
-				</div>
-			</div>
-		</div>
-	</section><!--/#do_action-->
+
+
 @endsection

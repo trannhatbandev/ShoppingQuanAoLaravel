@@ -91,20 +91,25 @@
 								<li><a href="#"><i class="fa fa-star"></i>Danh sách yêu thích</a></li>
 								<?php
 									$customer_id = Session::get('customer_id');
-									if($customer_id!=null){
+									$shipping_id = Session::get('shipping_id');
+									if($customer_id!=null && $shipping_id==null){
 
 									
 								?>
 								<li><a href="{{URL::to('/checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
 								<?php
-									}else{
+									}elseif($customer_id!=null && $shipping_id!=null){
 									?>
+								<li><a href="{{URL::to('/payment')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
+								<?php
+									}else{		
+								?>
 								<li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
 								<?php
 									}
 								?>
-								
-								<li><a href="{{URL::to('/gio-hang')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
+
+								<li><a href="{{URL::to('/show-cart')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
 
 								<?php
 									$customer_id = Session::get('customer_id');
